@@ -14,7 +14,7 @@ import numpy
 from sklearn import metrics
 from time import strftime, localtime
 
-from transformers import BertModel
+from transformers import BertModel,AlbertModel
 
 import torch
 import torch.nn as nn
@@ -40,8 +40,9 @@ class Instructor:
             bert = BertModel.from_pretrained(opt.pretrained_bert_name)
             self.model = opt.model_class(bert, opt).to(opt.device)
         elif 'albert' in opt.model_name:
+            print("WE ARE INSIDE")
             tokenizer = Tokenizer4AlBert(opt.max_seq_len, opt.pretrained_albert_name)
-            bert = BertModel.from_pretrained(opt.pretrained_albert_name)
+            bert = AlbertModel.from_pretrained(opt.pretrained_albert_name)
             self.model = opt.model_class(bert, opt).to(opt.device)
         else:
             tokenizer = build_tokenizer(
