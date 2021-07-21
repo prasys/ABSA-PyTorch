@@ -248,6 +248,7 @@ def main():
         'aen_bert': AEN_BERT,
         'lcf_bert': LCF_BERT,
         'albert_spc': ALBERT_SPC,
+        'roberta_spc': ROBERTA_SPC,
         # default hyper-parameters for LCF-BERT model is as follws:
         # lr: 2e-5
         # l2: 1e-5
