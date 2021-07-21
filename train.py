@@ -35,15 +35,15 @@ class Instructor:
     def __init__(self, opt):
         self.opt = opt
 
-        if 'bert' in opt.model_name:
-            tokenizer = Tokenizer4Bert(opt.max_seq_len, opt.pretrained_bert_name)
-            bert = BertModel.from_pretrained(opt.pretrained_bert_name)
-            self.model = opt.model_class(bert, opt).to(opt.device)
-        elif 'albert' in opt.model_name:
-            print("WE ARE INSIDE")
+        if 'albert' in opt.model_name:
             tokenizer = Tokenizer4AlBert(opt.max_seq_len, opt.pretrained_albert_name)
             bert = AlbertModel.from_pretrained(opt.pretrained_albert_name)
             self.model = opt.model_class(bert, opt).to(opt.device)
+        elif 'bert' in opt.model_name:
+            tokenizer = Tokenizer4Bert(opt.max_seq_len, opt.pretrained_bert_name)
+            bert = BertModel.from_pretrained(opt.pretrained_bert_name)
+            self.model = opt.model_class(bert, opt).to(opt.device)
+            print("WE ARE INSIDE")
         else:
             tokenizer = build_tokenizer(
                 fnames=[opt.dataset_file['train'], opt.dataset_file['test']],
