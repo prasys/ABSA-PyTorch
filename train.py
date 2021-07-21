@@ -264,10 +264,20 @@ def main():
             'train': './datasets/semeval14/Restaurants_Train.xml.seg',
             'test': './datasets/semeval14/Restaurants_Test_Gold.xml.seg'
         },
+        'tshirt': {
+            'train': './datasets/semeval14/Menstshirt_Train.xml.seg',
+            'test': './datasets/semeval14/Menstshirt_Test_Gold.xml.seg'
+        },
+        'televison': {
+            'train': './datasets/semeval14/Television_Train.xml.seg',
+            'test': './datasets/semeval14/Television_Test_Gold.xml.seg'
+        },
         'laptop': {
             'train': './datasets/semeval14/Laptops_Train.xml.seg',
             'test': './datasets/semeval14/Laptops_Test_Gold.xml.seg'
         }
+
+
     }
     input_colses = {
         'lstm': ['text_indices'],
