@@ -41,7 +41,7 @@ class Instructor:
             bert = AlbertModel.from_pretrained(opt.pretrained_albert_name)
             self.model = opt.model_class(bert, opt).to(opt.device)
         elif 'roberta' in opt.model_name:
-            tokenizer = Tokenizer4RoBert(opt.max_seq_len, opt.pretrained_bert_name)
+            tokenizer = Tokenizer4Roberta(opt.max_seq_len, opt.pretrained_bert_name)
             bert = RobertaModel.from_pretrained(opt.pretrained_bert_name)
             self.model = opt.model_class(bert, opt).to(opt.device)
             print("WE ARE INSIDE")
