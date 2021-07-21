@@ -24,6 +24,7 @@ from data_utils import build_tokenizer, build_embedding_matrix, Tokenizer4Bert, 
 from models import LSTM, IAN, MemNet, RAM, TD_LSTM, TC_LSTM, Cabasc, ATAE_LSTM, TNet_LF, AOA, MGAN, ASGCN, LCF_BERT
 from models.aen import CrossEntropyLoss_LSR, AEN_BERT
 from models.bert_spc import BERT_SPC
+from models.albert_spc import ALBERT_SPC
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
