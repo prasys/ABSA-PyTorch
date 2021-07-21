@@ -14,17 +14,18 @@ import numpy
 from sklearn import metrics
 from time import strftime, localtime
 
-from transformers import BertModel,AlbertModel
+from transformers import BertModel,AlbertModel,RobertaModel
 
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, random_split
 
-from data_utils import build_tokenizer, build_embedding_matrix, Tokenizer4Bert, ABSADataset, Tokenizer4AlBert
+from data_utils import build_tokenizer, build_embedding_matrix, Tokenizer4Bert, ABSADataset, Tokenizer4AlBert,Tokenizer4Roberta
 from models import LSTM, IAN, MemNet, RAM, TD_LSTM, TC_LSTM, Cabasc, ATAE_LSTM, TNet_LF, AOA, MGAN, ASGCN, LCF_BERT
 from models.aen import CrossEntropyLoss_LSR, AEN_BERT
 from models.bert_spc import BERT_SPC
 from models.albert_spc import ALBERT_SPC
+from models.roberta_spc import ROBERTA_SPC
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -39,6 +40,11 @@ class Instructor:
             tokenizer = Tokenizer4AlBert(opt.max_seq_len, opt.pretrained_albert_name)
             bert = AlbertModel.from_pretrained(opt.pretrained_albert_name)
             self.model = opt.model_class(bert, opt).to(opt.device)
+        elif 'roberta' in opt.model_name:
+            tokenizer = Tokenizer4RoBert(opt.max_seq_len, opt.pretrained_bert_name)
+            bert = RobertaModel.from_pretrained(opt.pretrained_bert_name)
+            self.model = opt.model_class(bert, opt).to(opt.device)
+            print("WE ARE INSIDE")
         elif 'bert' in opt.model_name:
             tokenizer = Tokenizer4Bert(opt.max_seq_len, opt.pretrained_bert_name)
             bert = BertModel.from_pretrained(opt.pretrained_bert_name)
@@ -202,6 +208,7 @@ def main():
     parser.add_argument('--hidden_dim', default=300, type=int)
     parser.add_argument('--bert_dim', default=768, type=int)
     parser.add_argument('--pretrained_bert_name', default='bert-base-uncased', type=str)
+    parser.add_argument('--pretrained_robert_name', default='roberta-base', type=str)
     parser.add_argument('--pretrained_albert_name', default='roberta-base-openai-detector', type=str)
     parser.add_argument('--max_seq_len', default=85, type=int)
     parser.add_argument('--polarities_dim', default=3, type=int)
@@ -275,7 +282,9 @@ def main():
         'mgan': ['text_indices', 'aspect_indices', 'left_indices'],
         'asgcn': ['text_indices', 'aspect_indices', 'left_indices', 'dependency_graph'],
         'bert_spc': ['concat_bert_indices', 'concat_segments_indices'],
+        'roberta_spc': ['concat_bert_indices', 'concat_segments_indices'],
         'albert_spc': ['concat_bert_indices', 'concat_segments_indices'],
+        'aen_bert': ['text_bert_indices', 'aspect_bert_indices'],
         'aen_bert': ['text_bert_indices', 'aspect_bert_indices'],
         'lcf_bert': ['concat_bert_indices', 'concat_segments_indices', 'text_bert_indices', 'aspect_bert_indices'],
     }
