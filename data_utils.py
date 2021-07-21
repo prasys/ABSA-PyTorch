@@ -124,6 +124,7 @@ class Tokenizer4Bert:
 
 class Tokenizer4AlBert:
     def __init__(self, max_seq_len, pretrained_bert_name):
+        print(pretrained_bert_name)
         self.tokenizer = AlbertTokenizer.from_pretrained(pretrained_bert_name)
         self.max_seq_len = max_seq_len
 
