@@ -8,7 +8,7 @@ import pickle
 import numpy as np
 import torch
 from torch.utils.data import Dataset
-from transformers import BertTokenizer
+from transformers import BertTokenizer, AlbertTokenizer, RobertaTokenizer
 
 
 def build_tokenizer(fnames, max_seq_len, dat_fname):
@@ -33,13 +33,14 @@ def build_tokenizer(fnames, max_seq_len, dat_fname):
     return tokenizer
 
 
-def _load_word_vec(path, word2idx=None):
+def _load_word_vec(path, word2idx=None, embed_dim=300):
     fin = open(path, 'r', encoding='utf-8', newline='\n', errors='ignore')
     word_vec = {}
     for line in fin:
         tokens = line.rstrip().split()
-        if word2idx is None or tokens[0] in word2idx.keys():
-            word_vec[tokens[0]] = np.asarray(tokens[1:], dtype='float32')
+        word, vec = ' '.join(tokens[:-embed_dim]), tokens[-embed_dim:]
+        if word in word2idx.keys():
+            word_vec[word] = np.asarray(vec, dtype='float32')
     return word_vec
 
 
@@ -52,7 +53,7 @@ def build_embedding_matrix(word2idx, embed_dim, dat_fname):
         embedding_matrix = np.zeros((len(word2idx) + 2, embed_dim))  # idx 0 and len(word2idx)+1 are all-zeros
         fname = './glove.twitter.27B/glove.twitter.27B.' + str(embed_dim) + 'd.txt' \
             if embed_dim != 300 else './glove.42B.300d.txt'
-        word_vec = _load_word_vec(fname, word2idx=word2idx)
+        word_vec = _load_word_vec(fname, word2idx=word2idx, embed_dim=embed_dim)
         print('building embedding_matrix:', dat_fname)
         for word, i in word2idx.items():
             vec = word_vec.get(word)
@@ -111,6 +112,35 @@ class Tokenizer(object):
 class Tokenizer4Bert:
     def __init__(self, max_seq_len, pretrained_bert_name):
         self.tokenizer = BertTokenizer.from_pretrained(pretrained_bert_name)
+        self.max_seq_len = max_seq_len
+
+    def text_to_sequence(self, text, reverse=False, padding='post', truncating='post'):
+        sequence = self.tokenizer.convert_tokens_to_ids(self.tokenizer.tokenize(text))
+        if len(sequence) == 0:
+            sequence = [0]
+        if reverse:
+            sequence = sequence[::-1]
+        return pad_and_truncate(sequence, self.max_seq_len, padding=padding, truncating=truncating)
+
+class Tokenizer4AlBert:
+    def __init__(self, max_seq_len, pretrained_bert_name):
+        print(pretrained_bert_name)
+        self.tokenizer = AlbertTokenizer.from_pretrained(pretrained_bert_name)
+        self.max_seq_len = max_seq_len
+
+    def text_to_sequence(self, text, reverse=False, padding='post', truncating='post'):
+        sequence = self.tokenizer.convert_tokens_to_ids(self.tokenizer.tokenize(text))
+        if len(sequence) == 0:
+            sequence = [0]
+        if reverse:
+            sequence = sequence[::-1]
+        return pad_and_truncate(sequence, self.max_seq_len, padding=padding, truncating=truncating)
+
+
+class Tokenizer4Roberta:
+    def __init__(self, max_seq_len, pretrained_bert_name):
+        print(pretrained_bert_name)
+        self.tokenizer = RobertaTokenizer.from_pretrained(pretrained_bert_name)
         self.max_seq_len = max_seq_len
 
     def text_to_sequence(self, text, reverse=False, padding='post', truncating='post'):
