@@ -175,6 +175,8 @@ class ABSADataset(Dataset):
             right_with_aspect_indices = tokenizer.text_to_sequence(aspect + " " + text_right, reverse=True)
             aspect_indices = tokenizer.text_to_sequence(aspect)
             left_len = np.sum(left_indices != 0)
+            left_context_len = np.sum(text_left_indices != 0)
+            aspect_len = np.sum(aspect_indices != 0)
             aspect_len = np.sum(aspect_indices != 0)
             aspect_boundary = np.asarray([left_len, left_len + aspect_len - 1], dtype=np.int64)
             polarity = int(polarity) + 1
