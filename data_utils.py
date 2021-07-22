@@ -167,6 +167,9 @@ class ABSADataset(Dataset):
             aspect = lines[i + 1].lower().strip()
             polarity = lines[i + 2].strip()
 
+            text_raw_indices = tokenizer.text_to_sequence(text_left + " " + aspect + " " + text_right)
+            text_raw_without_aspect_indices = tokenizer.text_to_sequence(text_left + " " + text_right)
+
             text_indices = tokenizer.text_to_sequence(text_left + " " + aspect + " " + text_right)
             context_indices = tokenizer.text_to_sequence(text_left + " " + text_right)
             text_left_indices = tokenizer.text_to_sequence(text_left)
