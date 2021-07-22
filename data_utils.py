@@ -187,8 +187,11 @@ class ABSADataset(Dataset):
             concat_bert_indices = tokenizer.text_to_sequence('[CLS] ' + text_left + " " + aspect + " " + text_right + ' [SEP] ' + aspect + " [SEP]")
             concat_segments_indices = [0] * (text_len + 2) + [1] * (aspect_len + 1)
             concat_segments_indices = pad_and_truncate(concat_segments_indices, tokenizer.max_seq_len)
+            bert_segments_ids = np.asarray([0] * (np.sum(text_raw_indices != 0) + 2) + [1] * (aspect_len + 1))
+            bert_segments_ids = pad_and_truncate(bert_segments_ids, tokenizer.max_seq_len)
 
             text_bert_indices = tokenizer.text_to_sequence("[CLS] " + text_left + " " + aspect + " " + text_right + " [SEP]")
+            text_raw_bert_indices = tokenizer.text_to_sequence("[CLS] " + text_left + " " + aspect + " " + text_right + " [SEP]")
             aspect_bert_indices = tokenizer.text_to_sequence("[CLS] " + aspect + " [SEP]")
 
             dependency_graph = np.pad(idx2graph[i], \
