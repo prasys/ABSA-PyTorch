@@ -169,6 +169,8 @@ class ABSADataset(Dataset):
 
             text_indices = tokenizer.text_to_sequence(text_left + " " + aspect + " " + text_right)
             context_indices = tokenizer.text_to_sequence(text_left + " " + text_right)
+            text_left_indices = tokenizer.text_to_sequence(text_left)
+            text_right_indices = tokenizer.text_to_sequence(text_right, reverse=True)
             left_indices = tokenizer.text_to_sequence(text_left)
             left_with_aspect_indices = tokenizer.text_to_sequence(text_left + " " + aspect)
             right_indices = tokenizer.text_to_sequence(text_right, reverse=True)
