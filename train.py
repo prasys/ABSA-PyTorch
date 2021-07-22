@@ -26,6 +26,7 @@ from models.aen import CrossEntropyLoss_LSR, AEN_BERT
 from models.bert_spc import BERT_SPC
 from models.albert_spc import ALBERT_SPC
 from models.roberta_spc import ROBERTA_SPC
+from models.td_bert import TD_BERT
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -249,6 +250,8 @@ def main():
         'lcf_bert': LCF_BERT,
         'albert_spc': ALBERT_SPC,
         'roberta_spc': ROBERTA_SPC,
+        'td_bert': TD_BERT,
+        
         # default hyper-parameters for LCF-BERT model is as follws:
         # lr: 2e-5
         # l2: 1e-5
@@ -298,6 +301,7 @@ def main():
         'aen_bert': ['text_bert_indices', 'aspect_bert_indices'],
         'aen_bert': ['text_bert_indices', 'aspect_bert_indices'],
         'lcf_bert': ['concat_bert_indices', 'concat_segments_indices', 'text_bert_indices', 'aspect_bert_indices'],
+        'td_bert': ['text_bert_indices', 'bert_segments_ids','left_context_len','aspect_len'],
     }
     initializers = {
         'xavier_uniform_': torch.nn.init.xavier_uniform_,

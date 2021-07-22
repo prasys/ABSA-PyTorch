@@ -205,6 +205,8 @@ class ABSADataset(Dataset):
                 'aspect_boundary': aspect_boundary,
                 'dependency_graph': dependency_graph,
                 'polarity': polarity,
+                'left_context_len': left_context_len,
+                'aspect_len': aspect_len,
             }
 
             all_data.append(data)
